@@ -28,19 +28,68 @@ The `University` class is used to represent a university, with properties and me
 * `student`: an `ArrayList` containing instances of the `Student` class representing the enrolled students.
 * `course`: an `ArrayList` containing instances of the `Course` class representing the activated courses.
 
-### Constructors
+## Constructors
 
-* `University(String name)`: creates a new `University` object with the given name.
+#### `public University(String name)`: creates a new `University` object with the given name.
 
-### Methods
+## Methods
 
-* `getName()`: gets the name of the university.
-* `setRector(String first, String last)`: sets the name of the rector of the university.
-* `getRector()`: gets the name of the rector of the university.
-* `enroll(String first, String last)`: enrolls a new student in the university.
-* `student(int id)`: retrieves the information for a given student.
-* `activate(String title, String teacher)`: activates a new course with the given title and teacher.
-* `course(int code)`: retrieves the information for a given course.
-* `register(int studentID, int courseCode)`: registers a student to attend a course.
-* `listAttendees(int courseCode)`: retrieves a list of attendees for a course.
-* `studyPlan(int studentID)`: retrieves the study plan for a given student.
+#### `public String getName()`
+
+Returns the name of the university.
+
+#### `public void setRector(String first, String last)`
+
+Sets the first and last name of the rector.
+
+#### `public String getRector()`
+
+Returns a string representation of the rector.
+
+#### `public int enroll(String first, String last)`
+
+Enrolls a new student with the given first and last name. Returns the ID of the new student.
+
+#### `public String student(int id)`
+
+Returns a string representation of the student with the given ID.
+
+#### `public int activate(String title, String teacher)`
+
+Activates a new course with the given title and teacher. Returns the code of the new course.
+
+#### `public String course(int code)`
+
+Returns a string representation of the course with the given code.
+
+#### `public void register(int studentID, int courseCode)`
+
+Registers the student with the given ID for the course with the given code.
+
+#### `public String listAttendees(int courseCode)`
+
+Returns a string representation of the attendees for the course with the given code.
+
+#### `public String studyPlan(int studentID)`
+
+Returns a string representation of the courses the student with the given ID is enrolled in.
+
+#### `public void exam(int studentId, int courseID, int grade)`
+
+Records the grade for the student with the given ID for the exam in the course with the given code.
+
+#### `public String studentAvg(int studentId)`
+
+Returns the average grade for the student with the given ID.
+
+#### `public double studentAvgDouble(int studentId)`
+
+Returns the average grade for the student with the given ID as a double.
+
+#### `public String courseAvg(int courseId)`
+
+Returns the average grade for the course with the given code.
+
+#### `public String topThreeStudents()`
+
+Returns a string representation of the top three students with the highest average score.
