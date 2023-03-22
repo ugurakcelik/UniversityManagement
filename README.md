@@ -1,19 +1,46 @@
-# UniversityManagement
+# University Management Project
 
-This Java program simulates a university using an Object Oriented structure. It creates a university object, sets the rector, enrolls students, activates courses, registers students for courses, lists attendees, prints study plans, takes exams, and calculates student and course averages. The `University` class has the following functionalities:
+This project is an implementation of a university management system that uses an Object-Oriented Programming (OOP) structure to model the entities in a university, such as students, courses, and the university itself.
 
-Enroll a student in the university: Using the enroll() method, a user can enroll a student in the university by providing the student's first and last name. The method returns a unique ID for the newly enrolled student.
+The main class contains the entry point for the program, which initializes an instance of the University class, sets the name of the university, and creates and enrolls students into it. The program also activates courses and registers students in them, schedules exams, and calculates student and course averages.
 
-Retrieve information about a student: Using the student() method, a user can retrieve information about a student by providing the student's ID. The method returns a string containing the student's information, such as their first and last name.
+## Overview
 
-Activate a new course: Using the activate() method, a user can activate a new course with a given title and teacher name. The method returns a unique code for the newly activated course.
+The `University` class is used to represent a university, with properties and methods to manage students and courses. The class provides the following features:
 
-Retrieve information about a course: Using the course() method, a user can retrieve information about a course by providing its unique code. The method returns a string containing the course's information, such as its title and teacher name.
+* Enrolling students
+* Registering students for courses
+* Activating new courses
+* Retrieving information about students and courses
+* Listing attendees for a course
+* Retrieving a student's study plan
 
-Register a student for a course: Using the register() method, a user can register a student to attend a course by providing the student's ID and the course code. The method checks if the course has reached its maximum number of attendees and if the student is not already registered for too many courses. If the registration is successful, the method logs the registration.
+## Class Members
 
-Retrieve a list of attendees for a course: Using the listAttendees() method, a user can retrieve a list of attendees for a course by providing its unique code. The method returns a string containing the information of each attendee separated by a new line.
+### Fields
 
-Retrieve the study plan for a student: Using the studyPlan() method, a user can retrieve the study plan for a student by providing their ID. The method returns a string containing the information for each course the student is registered to attend, separated by a new line.
+* `MAX_STUDENTS`: an integer constant representing the maximum number of students allowed in the university.
+* `MAX_COURSES`: an integer constant representing the maximum number of courses allowed in the university.
+* `MAX_ATTENDEES`: an integer constant representing the maximum number of attendees allowed for a course.
+* `MAX_COURSES_PER_STUDENT`: an integer constant representing the maximum number of courses a student can attend.
+* `name`: a string representing the name of the university.
+* `rector`: an instance of the `Rector` class representing the rector of the university.
+* `student`: an `ArrayList` containing instances of the `Student` class representing the enrolled students.
+* `course`: an `ArrayList` containing instances of the `Course` class representing the activated courses.
 
-The University class also includes constants for the maximum number of students, courses, attendees per course, and courses per student. The class uses an ArrayList to store the students and courses, and a Logger object to log events such as new student enrollments, new course activations, and student course registrations.
+### Constructors
+
+* `University(String name)`: creates a new `University` object with the given name.
+
+### Methods
+
+* `getName()`: gets the name of the university.
+* `setRector(String first, String last)`: sets the name of the rector of the university.
+* `getRector()`: gets the name of the rector of the university.
+* `enroll(String first, String last)`: enrolls a new student in the university.
+* `student(int id)`: retrieves the information for a given student.
+* `activate(String title, String teacher)`: activates a new course with the given title and teacher.
+* `course(int code)`: retrieves the information for a given course.
+* `register(int studentID, int courseCode)`: registers a student to attend a course.
+* `listAttendees(int courseCode)`: retrieves a list of attendees for a course.
+* `studyPlan(int studentID)`: retrieves the study plan for a given student.
