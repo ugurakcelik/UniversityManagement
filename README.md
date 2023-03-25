@@ -1,5 +1,5 @@
 # University Management Project
-//test
+
 This project is an implementation of a university management system that uses an Object-Oriented Programming (OOP) structure to model the entities in a university, such as students, courses, and the university itself.
 
 The main class contains the entry point for the program, which initializes an instance of the University class, sets the name of the university, and creates and enrolls students into it. The program also activates courses and registers students in them, schedules exams, and calculates student and course averages.
