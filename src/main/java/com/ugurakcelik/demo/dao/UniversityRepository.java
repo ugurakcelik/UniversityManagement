@@ -1,6 +1,6 @@
 package com.ugurakcelik.demo.dao;
 
-public interface UniversityDao {
+public interface UniversityRepository {
 
     void createUniversity(String name);
     int activateCourse(String title, String teacher);

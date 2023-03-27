@@ -3,10 +3,8 @@ package com.ugurakcelik.demo.dao;
 import com.ugurakcelik.demo.model.University;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-
 @Repository("UniversityDao")
-public class UniversityDataAccessService implements UniversityDao{
+public class UniversityRepositoryImpl implements UniversityRepository {
 
     University uni;
 

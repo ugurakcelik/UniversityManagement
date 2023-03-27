@@ -1,6 +1,6 @@
 package com.ugurakcelik.demo.service;
 
-import com.ugurakcelik.demo.dao.UniversityDao;
+import com.ugurakcelik.demo.dao.UniversityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class UniversityService {
 
-    private final UniversityDao universityDao;
+    private final UniversityRepository universityRepository;
 
     @Autowired
-    public UniversityService(@Qualifier("UniversityDao") UniversityDao universityDao) {
-        this.universityDao = universityDao;
+    public UniversityService(@Qualifier("UniversityDao") UniversityRepository universityRepository) {
+        this.universityRepository = universityRepository;
     }
 
     public void createUni(String name){
-        universityDao.createUniversity(name);
+        universityRepository.createUniversity(name);
     }
 
     public String getUni(){
-        return universityDao.getUniName();
+        return universityRepository.getUniName();
     }
 }
