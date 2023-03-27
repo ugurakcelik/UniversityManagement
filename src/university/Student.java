@@ -1,19 +1,15 @@
 package university;
 
-import java.util.ArrayList;
-
 public class Student {
-	
+
 	private String first;
 	private String last;
 	private final Integer id;
-	
-	private static int idCounter = 10000;
-	
-	public Student(String first, String last) {
+
+	public Student(String first, String last, int id) {
 		this.first = first;
 		this.last = last;
-		this.id = idCounter++;
+		this.id = id;
 	}
 
 	public String getFirst() {
@@ -35,10 +31,9 @@ public class Student {
 	public Integer getId() {
 		return id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return id + " " + first + " " + last;
 	}
-	
 }

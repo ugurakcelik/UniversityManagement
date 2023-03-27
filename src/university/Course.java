@@ -12,12 +12,10 @@ public class Course {
 	private ArrayList<Integer> attendees = new ArrayList<>();
 	private HashMap<Integer, Integer> grades = new HashMap<>();
 
-	private static int idCounter = 10;
-
-	public Course(String title, String teacher) {
+	public Course(String title, String teacher, int id) {
 		this.title = title;
 		this.teacher = teacher;
-		this.id = idCounter++;
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -85,7 +83,7 @@ public class Course {
 			count++;
 		}
 		double avg = sum / count;
-		return String.valueOf(avg);
+		return title + " : " + String.valueOf(avg);
 	}
 
 }

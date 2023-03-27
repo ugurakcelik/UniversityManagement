@@ -23,6 +23,6 @@ public class Rector {
 	
 	@Override
 	public String toString() {
-		return getFirst() + " " + getFirst();
+		return getFirst() + " " + getLast();
 	}	
 }
