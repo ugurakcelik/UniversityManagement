@@ -191,7 +191,7 @@ public class University {
             }
         });
 
-        int sample = student.size() < 3 ? student.size() : 3 ;
+        int sample = (int) student.stream().filter(s -> studentAvgDouble(s.getId()) > 0).limit(3).count();
 
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < sample; i++) {
