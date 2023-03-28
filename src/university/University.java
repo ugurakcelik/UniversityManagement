@@ -241,6 +241,7 @@ public class University {
 	public double studentAvgDouble(int studentId) {
 		double sum = 0;
 		double count = 0;
+		double enrolled = 0;
 		for(Course courses : course) {
 			if(courses.attendees().contains(studentId) && courses.grades().containsKey(studentId)) {
 				sum +=courses.grades().get(studentId);
@@ -294,7 +295,7 @@ public class University {
 		        }
 		    });
 		 	
-		  int sample = student.size() < 3 ? student.size() : 3 ;
+		  int sample = (int) student.stream().filter(s -> studentAvgDouble(s.getId()) > 0).limit(3).count();
 		  
 	      StringBuilder str = new StringBuilder();
 	      for (int i = 0; i < sample; i++) {
