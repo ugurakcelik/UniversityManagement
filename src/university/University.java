@@ -241,7 +241,6 @@ public class University {
 	public double studentAvgDouble(int studentId) {
 		double sum = 0;
 		double count = 0;
-		double enrolled = 0;
 		for(Course courses : course) {
 			if(courses.attendees().contains(studentId) && courses.grades().containsKey(studentId)) {
 				sum +=courses.grades().get(studentId);
