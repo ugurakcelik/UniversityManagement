@@ -160,17 +160,16 @@ public class University {
 	 * @return list of attendees separated by "\n"
 	 */
 	public String listAttendees(int courseCode){
-		
+
 		StringBuilder str = new StringBuilder();
 		Course c = findCourseById(courseCode);
-		for(int i=0; i < c.attendees().size(); i++) {
-			int studentID = c.attendees().get(i);
-			str.append(findStudentById(studentID).toString()+ "\n");
-		}
 
+		for(int i=0; i < c.attendees().size(); i++) {
+		    int studentID = c.attendees().get(i);
+		    str.append(findStudentById(studentID).toString()).append("\n");
+		}
 		return (str.length() == 0) ? "No attendees" : str.toString().trim();
-		
-	}
+	 }
 
 	/**
 	 * Retrieves the study plan for a student.
@@ -186,14 +185,14 @@ public class University {
 	public String studyPlan(int studentID){
 
 		StringBuilder str = new StringBuilder();
-		for(int i=0; i < course.size(); i++) {
-			
-			if(course.get(i).attendees().contains(studentID)) {
-				str.append(course.get(i).toString() + "\n");
-			}
+		for (Course value : course) {
+
+		    if (value.attendees().contains(studentID)) {
+			str.append(value).append("\n");
+		    }
 		}
 		return (str.length() == 0) ? "No courses" : str.toString().trim();
-	}
+	 }
 
 	/**
 	 * records the grade (integer 0-30) for an exam can 
@@ -205,7 +204,7 @@ public class University {
 	public void exam(int studentId, int courseID, int grade) {
 		
 	    Course cTmp = findCourseById(courseID);
-		Student sTmp = findStudentById(studentId);
+	    Student sTmp = findStudentById(studentId);
 	    logger.info("Student " + studentId + " took an exam in course " + courseID + " with grade " + grade);
 	    cTmp.exam(sTmp.getId(), grade);
 	}
@@ -223,18 +222,11 @@ public class University {
 	 * @return the average grade formatted as a string.
 	 */
 	public String studentAvg(int studentId) {
-		double sum = 0;
-		double count = 0;
 		
-		for(Course courses : course) {
-			if(courses.attendees().contains(studentId) && courses.grades().containsKey(studentId)) {
-				sum +=courses.grades().get(studentId);
-				count++;
-			}
-		}		
-		if (count == 0) {
+		double avg = studentAvgDouble(studentId);
+        	if (avg == 0) {
 	        return "Student " + studentId + " hasn't taken any exams";
-	    } else {
+	    	} else {
 	        double avg = (double) sum / count;
 	        return String.format("Student %d : %.1f", studentId, avg);
 	    }
@@ -311,13 +303,11 @@ public class University {
 	  }
 	 
 	 public Student findStudentById(int id) {
-		 Student tmp = student.stream().filter(students -> students.getId().equals(id)).findFirst().orElse(null);
-		 return tmp;
+		 return student.stream().filter(students -> students.getId().equals(id)).findFirst().orElse(null);
 	 }
 	 
 	 public Course findCourseById(int id) {
-		 Course tmp = course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
-		 return tmp;
+		 return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
 	 }
 
     /**
