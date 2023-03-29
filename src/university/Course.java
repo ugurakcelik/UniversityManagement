@@ -83,7 +83,7 @@ public class Course {
 			count++;
 		}
 		double avg = sum / count;
-		return title + " : " + String.valueOf(avg);
+		return title + " : " + avg;
 	}
 
 }
