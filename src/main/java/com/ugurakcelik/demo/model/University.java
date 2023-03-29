@@ -121,10 +121,10 @@ public class University {
     public String studyPlan(int studentID){
 
         StringBuilder str = new StringBuilder();
-        for(int i=0; i < course.size(); i++) {
+        for (Course value : course) {
 
-            if(course.get(i).attendees().contains(studentID)) {
-                str.append(course.get(i).toString() + "\n");
+            if (value.attendees().contains(studentID)) {
+                str.append(value.toString() + "\n");
             }
         }
         return (str.length() == 0) ? "No courses" : str.toString().trim();
@@ -154,7 +154,7 @@ public class University {
         if (count == 0) {
             return "Student " + studentId + " hasn't taken any exams";
         } else {
-            double avg = (double) sum / count;
+            double avg = sum / count;
             return String.format("Student %d : %.1f", studentId, avg);
         }
     }
