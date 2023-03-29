@@ -59,7 +59,7 @@ public class University {
 
     public String student(int id){
 
-        Student tmp = student.stream().filter(students -> students.getId().equals(id)).findFirst().orElse(null);
+        Student tmp = findStudentById(id);
         if(tmp == null) {
             throw new RuntimeException("Student not found.");
         }
@@ -79,7 +79,7 @@ public class University {
 
     public String course(int code){
 
-        Course tmp = course.stream().filter(courses -> courses.getId().equals(code)).findFirst().orElse(null);
+        Course tmp = findCourseById(code);
         if(tmp == null) {
             throw new RuntimeException("Course not found.");
         }
@@ -88,10 +88,10 @@ public class University {
 
     public void register(int studentID, int courseCode){
 
-        Course cTmp = course.stream().filter(courses -> courses.getId().equals(courseCode)).findFirst().orElse(null);
-        Student stTmp = student.stream().filter(students -> students.getId().equals(studentID)).findFirst().orElse(null);
+        Course cTmp = findCourseById(courseCode);
+        Student sTmp = findStudentById(studentID);
 
-        if(cTmp == null || stTmp == null ) {
+        if(cTmp == null || sTmp == null ) {
             throw new RuntimeException("No course or student matched.");
         }
         if(cTmp.attendees().size() >= MAX_ATTENDEES) {
@@ -101,21 +101,20 @@ public class University {
             throw new RuntimeException("Student cannot attend no more than " +MAX_COURSES_PER_STUDENT + " distinct courses.");
         }
 
-        logger.info("Student " + stTmp.getId() + " signed up for course " + cTmp.getId());
-        cTmp.register(stTmp.getId());
+        logger.info("Student " + sTmp.getId() + " signed up for course " + cTmp.getId());
+        cTmp.register(sTmp.getId());
     }
 
     public String listAttendees(int courseCode){
 
         StringBuilder str = new StringBuilder();
-        Course c = course.stream().filter(courses -> courses.getId().equals(courseCode)).findFirst().orElse(null);
+        Course c = findCourseById(courseCode);
+
         for(int i=0; i < c.attendees().size(); i++) {
             int studentID = c.attendees().get(i);
-            str.append(student.stream().filter(students -> students.getId().equals(studentID)).findFirst().orElse(null).toString()+ "\n");
+            str.append(findStudentById(studentID).toString()).append("\n");
         }
-
         return (str.length() == 0) ? "No attendees" : str.toString().trim();
-
     }
 
     public String studyPlan(int studentID){
@@ -124,7 +123,7 @@ public class University {
         for (Course value : course) {
 
             if (value.attendees().contains(studentID)) {
-                str.append(value.toString() + "\n");
+                str.append(value).append("\n");
             }
         }
         return (str.length() == 0) ? "No courses" : str.toString().trim();
@@ -132,29 +131,21 @@ public class University {
 
     public void exam(int studentId, int courseID, int grade) {
 
-        Course cTmp = course.stream().filter(courses -> courses.getId().equals(courseID)).findFirst().orElse(null);
-        Student stTmp = student.stream().filter(students -> students.getId().equals(studentId)).findFirst().orElse(null);
+        Course cTmp = findCourseById(courseID);
+        Student sTmp = findStudentById(studentId);
 
-        if(cTmp == null || stTmp == null){
+        if(cTmp == null || sTmp == null){
             throw new RuntimeException("No course or student matched.");
         }
 
         logger.info("Student " + studentId + " took an exam in course " + courseID + " with grade " + grade);
-        cTmp.exam(stTmp.getId(), grade);
+        cTmp.exam(sTmp.getId(), grade);
     }
     public String studentAvg(int studentId) {
-        double sum = 0;
-        double count = 0;
-        for(Course courses : course) {
-            if(courses.attendees().contains(studentId) && courses.grades().containsKey(studentId)) {
-                sum +=courses.grades().get(studentId);
-                count++;
-            }
-        }
-        if (count == 0) {
+        double avg = studentAvgDouble(studentId);
+        if (avg == 0) {
             return "Student " + studentId + " hasn't taken any exams";
         } else {
-            double avg = sum / count;
             return String.format("Student %d : %.1f", studentId, avg);
         }
     }
@@ -171,13 +162,12 @@ public class University {
         if (count == 0) {
             return 0;
         } else {
-            double avg = sum / count;
-            return avg;
+            return sum / count;
         }
     }
     public String courseAvg(int courseId) {
 
-        Course c = course.stream().filter(courses -> courses.getId().equals(courseId)).findFirst().orElse(null);
+        Course c = findCourseById(courseId);
 
         return (c.getTitle() + " average : " + c.courseAvg());
     }
@@ -203,6 +193,14 @@ public class University {
                     .append("\n");
         }
         return str.toString().trim();
+    }
+
+    public Student findStudentById(int id) {
+        return student.stream().filter(students -> students.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public Course findCourseById(int id) {
+        return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
     }
     private final static Logger logger = Logger.getLogger("University");
 
