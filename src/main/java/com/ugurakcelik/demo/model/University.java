@@ -1,63 +1,66 @@
 package com.ugurakcelik.demo.model;
 
 import com.ugurakcelik.demo.model.university.Course;
-import com.ugurakcelik.demo.model.university.Rector;
 import com.ugurakcelik.demo.model.university.Student;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
+@Entity
+@Table(name ="university")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class University {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Transient
     private final int MAX_STUDENTS = 1000;
+    @Transient
     private final int MAX_COURSES = 1000;
+    @Transient
     private final int MAX_ATTENDEES = 100;
+    @Transient
     private final int MAX_COURSES_PER_STUDENT = 25;
-
-    private static int courseId;
     private static int studentId;
-
     private String name;
-    private Rector rector = new Rector();
+    private String rector;
+    @Transient
     private ArrayList<Student> student = new ArrayList<>();
+    @Transient
     private ArrayList<Course> course = new ArrayList<>();
 
 
     public University(String name){
 
-        courseId = 10;
         studentId = 10000;
 
         logger.info("Creating university " + name);
         this.name = name;
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public void setRector(String first, String last){
-        rector.setFirst(first);
-        rector.setLast(last);
-    }
-
-    public String getRector(){
-        return rector.toString();
-    }
-
-    public int enroll(String first, String last){
+    public long enroll(String first, String last){
         if(student.size() >= MAX_STUDENTS ) {
             throw new RuntimeException("Maximum number of students reached.");
         }
-        Student tmp = new Student(first, last, studentId++);
+        Student tmp = new Student(first, last);
         logger.info("New student enrolled: " + tmp.getId() + ", " + tmp.getFirst() + " " + tmp.getLast());
         student.add(tmp);
         return tmp.getId();
     }
 
-    public String student(int id){
+    public String student(long id){
 
         Student tmp = findStudentById(id);
         if(tmp == null) {
@@ -71,13 +74,13 @@ public class University {
         if(course.size() >= MAX_COURSES) {
             throw new RuntimeException("Maximum number of courses reached.");
         }
-        Course c = new Course(title, teacher, courseId++);
+        Course c = new Course(title, teacher);
         logger.info("New course activated: " + c.getId() + ", " + c.getTitle() + " " + c.getTeacher());
         course.add(c);
-        return c.getId();
+        return c.getId().intValue();
     }
 
-    public String course(int code){
+    public String course(long code){
 
         Course tmp = findCourseById(code);
         if(tmp == null) {
@@ -111,7 +114,7 @@ public class University {
         Course c = findCourseById(courseCode);
 
         for(int i=0; i < c.attendees().size(); i++) {
-            int studentID = c.attendees().get(i);
+            long studentID = c.attendees().get(i);
             str.append(findStudentById(studentID).toString()).append("\n");
         }
         return (str.length() == 0) ? "No attendees" : str.toString().trim();
@@ -141,7 +144,7 @@ public class University {
         logger.info("Student " + studentId + " took an exam in course " + courseID + " with grade " + grade);
         cTmp.exam(sTmp.getId(), grade);
     }
-    public String studentAvg(int studentId) {
+    public String studentAvg(long studentId) {
         double avg = studentAvgDouble(studentId);
         if (avg == 0) {
             return "Student " + studentId + " hasn't taken any exams";
@@ -150,12 +153,12 @@ public class University {
         }
     }
 
-    public double studentAvgDouble(int studentId) {
+    public double studentAvgDouble(long studentId) {
         double sum = 0;
         double count = 0;
         for(Course courses : course) {
-            if(courses.attendees().contains(studentId) && courses.grades().containsKey(studentId)) {
-                sum +=courses.grades().get(studentId);
+            if(courses.attendees().contains(studentId) && courses.grades().contains(studentId)) {
+                sum +=courses.grades().stream().filter(exam -> exam.getStudentId().equals(studentId)).findFirst().orElse(null).getGrade();
                 count++;
             }
         }
@@ -165,7 +168,7 @@ public class University {
             return sum / count;
         }
     }
-    public String courseAvg(int courseId) {
+    public String courseAvg(long courseId) {
 
         Course c = findCourseById(courseId);
 
@@ -195,11 +198,11 @@ public class University {
         return str.toString().trim();
     }
 
-    public Student findStudentById(int id) {
+    public Student findStudentById(long id) {
         return student.stream().filter(students -> students.getId().equals(id)).findFirst().orElse(null);
     }
 
-    public Course findCourseById(int id) {
+    public Course findCourseById(long id) {
         return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
     }
     private final static Logger logger = Logger.getLogger("University");

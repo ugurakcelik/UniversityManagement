@@ -1,39 +1,35 @@
 package com.ugurakcelik.demo.model.university;
+
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String first;
     private String last;
-    private final Integer id;
-    public Student(String first, String last, int id) {
+
+    public Student(String first, String last){
         this.first = first;
         this.last = last;
-        this.id = id;
     }
 
-    public String getFirst() {
-        return first;
-    }
-
-    public void setFirst(String first) {
-        this.first = first;
-    }
-
-    public String getLast() {
-        return last;
-    }
-
-    public void setLast(String last) {
-        this.last = last;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
+/*    @Override
     public String toString() {
         return id + " " + first + " " + last;
-    }
+    }*/
 
 }
 

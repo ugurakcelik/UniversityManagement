@@ -1,40 +1,38 @@
 package com.ugurakcelik.demo.model.university;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Course {
-
-    private final String title;
+    private String title;
     private String teacher;
-    private final Integer id;
-    private ArrayList<Integer> attendees = new ArrayList<>();
-    private HashMap<Integer, Integer> grades = new HashMap<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Transient
+    private ArrayList<Long> attendees = new ArrayList<>();
+    @Transient
+    private List<Exam> grades= new ArrayList<>();
 
-    public Course(String title, String teacher, int id) {
+    public Course(String title, String teacher){
         this.title = title;
         this.teacher = teacher;
-        this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void register(Integer studentID) {
+    public void register(Long studentID) {
         if (attendees.size() >= 100) {
             throw new RuntimeException("Course is already full");
         }
@@ -44,30 +42,24 @@ public class Course {
         attendees.add(studentID);
     }
 
-    public ArrayList<Integer> attendees() {
+    public ArrayList<Long> attendees() {
         return this.attendees;
     }
 
-    public HashMap<Integer, Integer> grades() {
+    public List<Exam> grades() {
         return grades;
     }
-
-    @Override
-    public String toString() {
-        return id + "," + title + "," + teacher;
-    }
-
-    public void exam(Integer studentID, Integer grade) {
+    public void exam(Long studentID, Integer grade) {
         if (!attendees.contains(studentID)) {
             throw new RuntimeException("Student is not registered for this course");
         }
-        if (grades.containsKey(studentID)) {
+        if (grades.contains(studentID)){
             throw new RuntimeException("Student has already taken the exam for this course");
         }
         if (grade < 0 || grade > 30) {
             throw new RuntimeException("Grade must be between 0 and 30");
         }
-        grades.put(studentID, grade);
+        grades.add(new Exam(studentID, grade));
     }
 
     public String courseAvg() {
@@ -78,8 +70,8 @@ public class Course {
         if (grades.isEmpty()) {
             return "No student has taken the exam in " + title;
         }
-        for (Map.Entry<Integer, Integer> entry : grades.entrySet()) {
-            sum += entry.getValue();
+        for (Exam entry : grades) {
+            sum += entry.getGrade();
             count++;
         }
         double avg = sum / count;
