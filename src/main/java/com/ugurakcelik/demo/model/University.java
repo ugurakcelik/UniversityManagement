@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Entity
@@ -33,18 +34,16 @@ public class University {
     private final int MAX_ATTENDEES = 100;
     @Transient
     private final int MAX_COURSES_PER_STUDENT = 25;
-    private static int studentId;
     private String name;
     private String rector;
-    @Transient
-    private ArrayList<Student> student = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "universityId", referencedColumnName = "id")
+    private List<Student> student = new ArrayList<>();
     @Transient
     private ArrayList<Course> course = new ArrayList<>();
 
 
     public University(String name){
-
-        studentId = 10000;
 
         logger.info("Creating university " + name);
         this.name = name;
@@ -203,6 +202,10 @@ public class University {
     }
 
     public Course findCourseById(long id) {
+        return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public Course findExamById(long id) {
         return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
     }
     private final static Logger logger = Logger.getLogger("University");

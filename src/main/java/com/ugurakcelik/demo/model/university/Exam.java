@@ -10,14 +10,13 @@ import javax.persistence.*;
 @ToString
 @Getter
 @Setter
-@EqualsAndHashCode
 public class Exam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name="course_id", referencedColumnName="course_id")
     private long courseId;
 
     private Long studentId;
