@@ -8,7 +8,7 @@ public class Main {
 				
 				University poli = new University(universityName);
 				
-				poli.setRector("Guido", "Saracco");
+				poli.setRector("Guido Saracco");
 				
 				System.out.println("Rector of " + poli.getName() + " : " + poli.getRector());
 				

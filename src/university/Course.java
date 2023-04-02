@@ -10,7 +10,7 @@ public class Course {
 	private String teacher;
 	private final Integer id;
 	private ArrayList<Integer> attendees = new ArrayList<>();
-	private HashMap<Integer, Integer> grades = new HashMap<>();
+    private ArrayList<Exam> grades= new ArrayList<>();
 
 	public Course(String title, String teacher, int id) {
 		this.title = title;
@@ -48,7 +48,7 @@ public class Course {
 		return this.attendees;
 	}
 
-	public HashMap<Integer, Integer> grades() {
+	public ArrayList<Exam> grades() {
 		return grades;
 	}
 
@@ -57,33 +57,40 @@ public class Course {
 		return id + "," + title + "," + teacher;
 	}
 
-	public void exam(Integer studentID, Integer grade) {
+	public void exam(Integer studentID, int grade) {
+		
 		if (!attendees.contains(studentID)) {
 			throw new RuntimeException("Student is not registered for this course");
 		}
-		if (grades.containsKey(studentID)) {
+		if (!getGradeByStudentId(studentID).equals(0)) {
 			throw new RuntimeException("Student has already taken the exam for this course");
 		}
 		if (grade < 0 || grade > 30) {
 			throw new RuntimeException("Grade must be between 0 and 30");
 		}
-		grades.put(studentID, grade);
+		grades.add(new Exam(studentID, grade));
 	}
 
 	public String courseAvg() {
 
-		double sum = 0;
-		double count = 0;
+		   double sum = 0;
+	       double count = 0;
 
-		if (grades.isEmpty()) {
-			return "No student has taken the exam in " + title;
-		}
-		for (Map.Entry<Integer, Integer> entry : grades.entrySet()) {
-			sum += entry.getValue();
-			count++;
-		}
-		double avg = sum / count;
-		return title + " : " + avg;
+	        if (grades.isEmpty()) {
+	            return "No student has taken the exam in " + title;
+	        }
+	        for (Exam entry : grades) {
+	            sum += entry.getGrade();
+	            count++;
+	        }
+	        double avg = sum / count;
+	        return title + " : " + avg;
 	}
+	
+	public Integer getGradeByStudentId(int id) {
+		
+		Exam s = grades.stream().filter(exam -> exam.getStudentId().equals(id)).findFirst().orElse(null);
 
+		return s == null ? 0 : s.getGrade();
+	}
 }

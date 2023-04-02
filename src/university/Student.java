@@ -1,11 +1,11 @@
 package university;
 
 public class Student {
-
+	
 	private String first;
 	private String last;
 	private final Integer id;
-
+	
 	public Student(String first, String last, int id) {
 		this.first = first;
 		this.last = last;
@@ -31,7 +31,7 @@ public class Student {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	@Override
 	public String toString() {
 		return id + " " + first + " " + last;

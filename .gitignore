@@ -1,5 +1,6 @@
 
 /target/
 /bin/
-.idea
-.idea/
+.classpath
+.project
+/test/
