@@ -46,8 +46,8 @@ public class UniversityService {
        return university.getRector();
     }
 
-    public long activate(String title, String teacher){
-        Course c = new Course(title, teacher);
+    public long activate(String title, String teacher, long uniId){
+        Course c = new Course(title, teacher, uniId);
         courseRepository.save(c);
         return c.getId();
     }

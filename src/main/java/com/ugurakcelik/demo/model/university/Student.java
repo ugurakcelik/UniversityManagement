@@ -1,10 +1,14 @@
 package com.ugurakcelik.demo.model.university;
 
-import com.ugurakcelik.demo.model.University;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor
@@ -18,7 +22,6 @@ public class Student {
     private Long id;
     private String first;
     private String last;
-
     private long universityId;
 
     public Student(String first, String last){

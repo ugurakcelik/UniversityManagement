@@ -36,11 +36,13 @@ public class University {
     private final int MAX_COURSES_PER_STUDENT = 25;
     private String name;
     private String rector;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "universityId", referencedColumnName = "id")
     private List<Student> student = new ArrayList<>();
-    @Transient
-    private ArrayList<Course> course = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "universityId", referencedColumnName = "id")
+    private List<Course> course = new ArrayList<>();
 
 
     public University(String name){
@@ -131,7 +133,7 @@ public class University {
         return (str.length() == 0) ? "No courses" : str.toString().trim();
     }
 
-    public void exam(int studentId, int courseID, int grade) {
+    public void exam(long studentId, long courseID, int grade) {
 
         Course cTmp = findCourseById(courseID);
         Student sTmp = findStudentById(studentId);
@@ -156,9 +158,12 @@ public class University {
         double sum = 0;
         double count = 0;
         for(Course courses : course) {
-            if(courses.attendees().contains(studentId) && courses.grades().contains(studentId)) {
-                sum +=courses.grades().stream().filter(exam -> exam.getStudentId().equals(studentId)).findFirst().orElse(null).getGrade();
-                count++;
+            if(courses.attendees().contains(studentId)){
+                Float grade = courses.getGradeByStudentId(studentId);
+                if(!grade.equals(0)) {
+                    sum +=grade;
+                    count++;
+                }
             }
         }
         if (count == 0) {
@@ -202,10 +207,6 @@ public class University {
     }
 
     public Course findCourseById(long id) {
-        return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
-    }
-
-    public Course findExamById(long id) {
         return course.stream().filter(courses -> courses.getId().equals(id)).findFirst().orElse(null);
     }
     private final static Logger logger = Logger.getLogger("University");

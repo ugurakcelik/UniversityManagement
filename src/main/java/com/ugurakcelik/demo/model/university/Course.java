@@ -1,16 +1,11 @@
 package com.ugurakcelik.demo.model.university;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -25,11 +20,19 @@ public class Course {
     @Transient
     private ArrayList<Long> attendees = new ArrayList<>();
     @Transient
-    private List<Exam> grades= new ArrayList<>();
+    private ArrayList<Exam> grades= new ArrayList<>();
+
+    private long universityId;
 
     public Course(String title, String teacher){
         this.title = title;
         this.teacher = teacher;
+    }
+
+    public Course(String title, String teacher, long universityId){
+        this.title = title;
+        this.teacher = teacher;
+        this.universityId = universityId;
     }
 
     public void register(Long studentID) {
@@ -46,14 +49,15 @@ public class Course {
         return this.attendees;
     }
 
-    public List<Exam> grades() {
+    public ArrayList<Exam> grades() {
         return grades;
     }
-    public void exam(Long studentID, Integer grade) {
+    public void exam(long studentID, float grade) {
+
         if (!attendees.contains(studentID)) {
             throw new RuntimeException("Student is not registered for this course");
         }
-        if (grades.contains(studentID)){
+        if (!getGradeByStudentId(studentID).equals(0)) {
             throw new RuntimeException("Student has already taken the exam for this course");
         }
         if (grade < 0 || grade > 30) {
@@ -76,6 +80,12 @@ public class Course {
         }
         double avg = sum / count;
         return title + " : " + avg;
+    }
+
+    public Float getGradeByStudentId(long id) {
+
+        Exam s = grades.stream().filter(exam -> exam.getStudentId().equals(id)).findFirst().orElse(null);
+        return s == null ? 0f : s.getGrade();
     }
 
 }
