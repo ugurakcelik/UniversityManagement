@@ -104,9 +104,6 @@ public class UniversityService {
         University uTmp = universityRepository.findById(sTmp.getUniversityId())
                 .orElseThrow(() -> new RuntimeException("University not found."));
 
-        System.out.println(uTmp.getCourse());
         return uTmp.studentAvgDouble(sTmp.getId());
-
-
     }
 }

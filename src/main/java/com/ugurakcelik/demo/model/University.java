@@ -159,9 +159,9 @@ public class University implements Serializable {
         double sum = 0;
         double count = 0;
         for(Course courses : course) {
-            if(courses.attendees().contains(studentId)){
+            if(courses.attendees().stream().filter(attendee -> attendee.getStudentId() == studentId).findFirst().isPresent()){
                 Float grade = courses.getGradeByStudentId(studentId);
-                if(!grade.equals(0)) {
+                if(grade > 0f) {
                     sum +=grade;
                     count++;
                 }
