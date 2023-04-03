@@ -16,7 +16,6 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JoinColumn(name="course_id", referencedColumnName="course_id")
     private long courseId;
 
     private Long studentId;

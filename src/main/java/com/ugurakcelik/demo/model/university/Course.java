@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,10 +18,14 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "courseId", referencedColumnName = "id")*/
     @Transient
-    private ArrayList<Long> attendees = new ArrayList<>();
-    @Transient
-    private ArrayList<Exam> grades= new ArrayList<>();
+    private List<Long> attendees = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "courseId", referencedColumnName = "id")
+    private List<Exam> grades= new ArrayList<>();
 
     private long universityId;
 
@@ -45,11 +50,11 @@ public class Course {
         attendees.add(studentID);
     }
 
-    public ArrayList<Long> attendees() {
+    public List<Long> attendees() {
         return this.attendees;
     }
 
-    public ArrayList<Exam> grades() {
+    public List<Exam> grades() {
         return grades;
     }
     public void exam(long studentID, float grade) {

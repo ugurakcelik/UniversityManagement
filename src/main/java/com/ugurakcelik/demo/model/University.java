@@ -36,11 +36,11 @@ public class University {
     private final int MAX_COURSES_PER_STUDENT = 25;
     private String name;
     private String rector;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "universityId", referencedColumnName = "id")
     private List<Student> student = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "universityId", referencedColumnName = "id")
     private List<Course> course = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class University {
         return tmp.toString();
     }
 
-    public void register(int studentID, int courseCode){
+    public void register(long studentID, long courseCode){
 
         Course cTmp = findCourseById(courseCode);
         Student sTmp = findStudentById(studentID);

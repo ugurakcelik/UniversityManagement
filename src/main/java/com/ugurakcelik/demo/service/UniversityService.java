@@ -9,11 +9,13 @@ import com.ugurakcelik.demo.model.university.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class UniversityService {
     @Autowired
     UniversityRepository universityRepository;
@@ -56,5 +58,9 @@ public class UniversityService {
         Student tmp = new Student(first, last, universityId);
         studentRepository.save(tmp);
         return tmp.getId();
+    }
+
+    public void register(long studentID, long courseCode){
+
     }
 }
