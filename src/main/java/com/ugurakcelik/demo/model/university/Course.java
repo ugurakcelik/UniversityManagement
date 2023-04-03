@@ -15,13 +15,14 @@ public class Course implements Serializable {
     private String title;
     private String teacher;
     @Id
+    @SequenceGenerator(name = "course_id_seq", sequenceName = "course_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_id_seq")
-    @SequenceGenerator(name = "course_id_seq", sequenceName = "course_id_seq", allocationSize = 1)
     private Long id = 1L;
+    @Column(name = "university_id")
     private long universityId;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "courseId", referencedColumnName = "id")
-    @JoinColumn(name = "universityId", referencedColumnName = "universityId")
+    @JoinColumn(name = "universityId", referencedColumnName = "university_id")
     private List<Attendee> attendees = new ArrayList<>();
 
 
@@ -29,25 +30,20 @@ public class Course implements Serializable {
     @JoinColumn(name = "courseId", referencedColumnName = "id")
     private List<Exam> grades= new ArrayList<>();
 
-    public Course(String title, String teacher){
-        this.title = title;
-        this.teacher = teacher;
-    }
-
     public Course(String title, String teacher, long universityId){
         this.title = title;
         this.teacher = teacher;
         this.universityId = universityId;
     }
 
-    public void register(Long studentID) {
+    public void register(Long studentID, long universityId) {
         if (attendees.size() >= 100) {
             throw new RuntimeException("Course is already full");
         }
         if (findAttendeeById(studentID) != null) {
             throw new RuntimeException("Student is already registered for this course");
         }
-        attendees.add(new Attendee(studentID, id, title));
+        attendees.add(new Attendee(studentID, id, title, universityId));
     }
 
     public List<Attendee> attendees() {

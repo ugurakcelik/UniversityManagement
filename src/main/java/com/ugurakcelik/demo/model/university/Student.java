@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class Student implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
-    @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 1)
     private Long id = 1L;
     private String first;
     private String last;
@@ -27,12 +27,6 @@ public class Student implements Serializable {
     public Student(String first, String last) {
         this.first = first;
         this.last = last;
-    }
-
-    public Student(String first, String last, Long id){
-        this.first = first;
-        this.last = last;
-        this.id = id;
     }
 
     public Student(String first, String last, long universityId){

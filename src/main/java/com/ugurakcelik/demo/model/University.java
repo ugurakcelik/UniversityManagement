@@ -22,9 +22,9 @@ import java.util.logging.Logger;
 public class University implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "university_id_seq", sequenceName = "university_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "university_id_seq")
-    @SequenceGenerator(name = "university_id_seq", sequenceName = "university_id_seq", allocationSize = 1)
-    private long id;
+    private long id = 1L;
     @Transient
     private final int MAX_STUDENTS = 1000;
     @Transient
@@ -37,24 +37,26 @@ public class University implements Serializable {
     private String rector;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "universityId", referencedColumnName = "id")
-    private List<Student> student = new ArrayList<>();
+    private List<Student> student;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "universityId", referencedColumnName = "id")
-    private List<Course> course = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id", referencedColumnName = "id")
+    private List<Course> course;
 
 
     public University(String name){
 
         logger.info("Creating university " + name);
         this.name = name;
+        this.student = new ArrayList<>();
+        this.course = new ArrayList<>();
     }
 
     public long enroll(String first, String last){
         if(student.size() >= MAX_STUDENTS ) {
             throw new RuntimeException("Maximum number of students reached.");
         }
-        Student tmp = new Student(first, last);
+        Student tmp = new Student(first, last, id);
         logger.info("New student enrolled: " + tmp.getId() + ", " + tmp.getFirst() + " " + tmp.getLast());
         student.add(tmp);
         return tmp.getId();
@@ -105,10 +107,10 @@ public class University implements Serializable {
         }
 
         logger.info("Student " + sTmp.getId() + " signed up for course " + cTmp.getId());
-        cTmp.register(sTmp.getId());
+        cTmp.register(sTmp.getId(), id);
     }
 
-    public String listAttendees(int courseCode){
+    public String listAttendees(long courseCode){
 
         StringBuilder str = new StringBuilder();
         Course c = findCourseById(courseCode);
@@ -122,7 +124,7 @@ public class University implements Serializable {
         return (str.length() == 0) ? "No attendees" : str.toString().trim();
     }
 
-    public String studyPlan(int studentID){
+    public String studyPlan(long studentID){
 
         StringBuilder str = new StringBuilder();
         for (Course value : course) {
@@ -181,12 +183,10 @@ public class University implements Serializable {
     }
     public String topThreeStudents() {
 
-        Collections.sort(student, new Comparator<Student>() {
-            public int compare(Student s1, Student s2) {
-                double s1Score = studentAvgDouble(s1.getId());
-                double s2Score = studentAvgDouble(s2.getId());
-                return Double.compare(s2Score, s1Score);
-            }
+        Collections.sort(student, (s1, s2) -> {
+            double s1Score = studentAvgDouble(s1.getId());
+            double s2Score = studentAvgDouble(s2.getId());
+            return Double.compare(s2Score, s1Score);
         });
 
         int sample = (int) student.stream().filter(s -> studentAvgDouble(s.getId()) > 0).limit(3).count();
