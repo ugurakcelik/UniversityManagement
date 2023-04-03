@@ -1,33 +1,33 @@
 package com.ugurakcelik.demo.model.university;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
-public class Course {
+@Data
+@ToString
+public class Course implements Serializable {
     private String title;
     private String teacher;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_id_seq")
+    @SequenceGenerator(name = "course_id_seq", sequenceName = "course_id_seq", allocationSize = 1)
+    private Long id = 1L;
+    private long universityId;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "courseId", referencedColumnName = "id")
+    @JoinColumn(name = "universityId", referencedColumnName = "universityId")
+    private List<Attendee> attendees = new ArrayList<>();
 
-    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "courseId", referencedColumnName = "id")*/
-    @Transient
-    private List<Long> attendees = new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "courseId", referencedColumnName = "id")
     private List<Exam> grades= new ArrayList<>();
-
-    private long universityId;
 
     public Course(String title, String teacher){
         this.title = title;
@@ -44,13 +44,13 @@ public class Course {
         if (attendees.size() >= 100) {
             throw new RuntimeException("Course is already full");
         }
-        if (attendees.contains(studentID)) {
+        if (findAttendeeById(studentID) != null) {
             throw new RuntimeException("Student is already registered for this course");
         }
-        attendees.add(studentID);
+        attendees.add(new Attendee(studentID, id, title));
     }
 
-    public List<Long> attendees() {
+    public List<Attendee> attendees() {
         return this.attendees;
     }
 
@@ -59,16 +59,17 @@ public class Course {
     }
     public void exam(long studentID, float grade) {
 
-        if (!attendees.contains(studentID)) {
+        if (findAttendeeById(studentID) == null) {
             throw new RuntimeException("Student is not registered for this course");
         }
-        if (!getGradeByStudentId(studentID).equals(0)) {
+
+        if (getGradeByStudentId(studentID) > 0f) {
             throw new RuntimeException("Student has already taken the exam for this course");
         }
         if (grade < 0 || grade > 30) {
             throw new RuntimeException("Grade must be between 0 and 30");
         }
-        grades.add(new Exam(studentID, grade));
+        grades.add(new Exam(studentID, id, grade));
     }
 
     public String courseAvg() {
@@ -91,6 +92,12 @@ public class Course {
 
         Exam s = grades.stream().filter(exam -> exam.getStudentId().equals(id)).findFirst().orElse(null);
         return s == null ? 0f : s.getGrade();
+
+    }
+
+    public Attendee findAttendeeById(long id) {
+        Attendee s = attendees.stream().filter(attendee -> attendee.getStudentId().equals(id)).findFirst().orElse(null);
+        return s;
     }
 
 }

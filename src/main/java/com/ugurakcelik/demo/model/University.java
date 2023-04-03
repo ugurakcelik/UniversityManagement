@@ -1,14 +1,13 @@
 package com.ugurakcelik.demo.model;
 
+import com.ugurakcelik.demo.model.university.Attendee;
 import com.ugurakcelik.demo.model.university.Course;
 import com.ugurakcelik.demo.model.university.Student;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,13 +17,13 @@ import java.util.logging.Logger;
 @Entity
 @Table(name ="university")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @ToString
-public class University {
+public class University implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "university_id_seq")
+    @SequenceGenerator(name = "university_id_seq", sequenceName = "university_id_seq", allocationSize = 1)
     private long id;
     @Transient
     private final int MAX_STUDENTS = 1000;
@@ -70,15 +69,15 @@ public class University {
         return tmp.toString();
     }
 
-    public int activate(String title, String teacher){
+    public long activate(String title, String teacher){
 
         if(course.size() >= MAX_COURSES) {
             throw new RuntimeException("Maximum number of courses reached.");
         }
-        Course c = new Course(title, teacher);
+        Course c = new Course(title, teacher, id);
         logger.info("New course activated: " + c.getId() + ", " + c.getTitle() + " " + c.getTeacher());
         course.add(c);
-        return c.getId().intValue();
+        return c.getId();
     }
 
     public String course(long code){
@@ -113,10 +112,12 @@ public class University {
 
         StringBuilder str = new StringBuilder();
         Course c = findCourseById(courseCode);
+        if(c == null) {
+            throw new RuntimeException("Course not found.");
+        }
 
-        for(int i=0; i < c.attendees().size(); i++) {
-            long studentID = c.attendees().get(i);
-            str.append(findStudentById(studentID).toString()).append("\n");
+        for (Attendee attende : c.attendees()) {
+            str.append(findStudentById(attende.getStudentId()).toString()).append("\n");
         }
         return (str.length() == 0) ? "No attendees" : str.toString().trim();
     }
@@ -133,7 +134,7 @@ public class University {
         return (str.length() == 0) ? "No courses" : str.toString().trim();
     }
 
-    public void exam(long studentId, long courseID, int grade) {
+    public void exam(long studentId, long courseID, float grade) {
 
         Course cTmp = findCourseById(courseID);
         Student sTmp = findStudentById(studentId);
