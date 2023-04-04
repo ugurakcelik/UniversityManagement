@@ -34,4 +34,4 @@ build/
 
 
 ### Test
-src/test
+src/test/java/com/ugurakcelik/demo/DemoApplicationTests.java
