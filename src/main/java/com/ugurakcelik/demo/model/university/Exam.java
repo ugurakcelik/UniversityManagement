@@ -8,7 +8,8 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @ToString
 public class Exam implements Serializable {
 

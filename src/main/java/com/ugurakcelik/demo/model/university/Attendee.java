@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @ToString
 public class Attendee implements Serializable {
 

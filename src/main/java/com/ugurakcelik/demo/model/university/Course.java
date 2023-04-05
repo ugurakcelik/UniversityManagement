@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @ToString
 public class Course implements Serializable {
     private String title;

@@ -6,18 +6,17 @@ import com.ugurakcelik.demo.model.university.Student;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
 @Entity
 @Table(name ="university")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @ToString
 public class University implements Serializable {
 
