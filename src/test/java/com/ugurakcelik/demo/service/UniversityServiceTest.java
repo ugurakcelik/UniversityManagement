@@ -8,9 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UniversityServiceTest {
+    private UniversityService universityService;
 
     @Autowired
-    UniversityService universityService;
+    public UniversityServiceTest(UniversityService universityService){
+        this.universityService = universityService;
+    }
 
     @Test
     @Order(1)

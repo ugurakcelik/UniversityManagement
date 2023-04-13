@@ -15,14 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UniversityService {
+
+    private final UniversityRepository universityRepository;
+    private final CourseRepository courseRepository;
+    private final StudentRepository studentRepository;
+    private final AttendeeRepository attendeeRepository;
+
     @Autowired
-    UniversityRepository universityRepository;
-    @Autowired
-    CourseRepository courseRepository;
-    @Autowired
-    StudentRepository studentRepository;
-    @Autowired
-    AttendeeRepository attendeeRepository;
+    public UniversityService(UniversityRepository universityRepository,
+                     CourseRepository courseRepository,
+                     StudentRepository studentRepository,
+                     AttendeeRepository attendeeRepository) {
+        this.universityRepository = universityRepository;
+        this.courseRepository = courseRepository;
+        this.studentRepository = studentRepository;
+        this.attendeeRepository = attendeeRepository;
+    }
 
     public String createUni(String name){
         University uni= new University(name);

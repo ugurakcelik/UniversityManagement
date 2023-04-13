@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api")
 public class UniversityController {
-
-    @Autowired
-    private final UniversityService universityService;
+    private UniversityService universityService;
 
     @Autowired
     public UniversityController(UniversityService universityService) {
