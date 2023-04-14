@@ -1,5 +1,6 @@
 package com.ugurakcelik.demo.model.university;
 
+import com.ugurakcelik.demo.model.University;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,28 +10,39 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Student implements Serializable {
 
     @Id
     @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
-    private Long id = 1L;
+    private Long id;
     private String first;
     private String last;
 
-    private long universityId;
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private University university;
 
     public Student(String first, String last) {
         this.first = first;
         this.last = last;
     }
 
-    public Student(String first, String last, long universityId){
+    public Student(String first, String last, University u) {
         this.first = first;
         this.last = last;
-        this.universityId = universityId;
+        this.university = u;
     }
 
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", first='" + first + '\'' +
+                ", last='" + last + '\'' +
+                ", universityId=" + university.getId() +
+                '}';
+    }
 }
 

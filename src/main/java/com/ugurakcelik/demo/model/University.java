@@ -23,7 +23,7 @@ public class University implements Serializable {
     @Id
     @SequenceGenerator(name = "university_id_seq", sequenceName = "university_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "university_id_seq")
-    private long id = 1L;
+    private long id;
     @Transient
     private final int MAX_STUDENTS = 1000;
     @Transient
@@ -34,12 +34,10 @@ public class University implements Serializable {
     private final int MAX_COURSES_PER_STUDENT = 25;
     private String name;
     private String rector;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "universityId", referencedColumnName = "id")
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Student> student;
 
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
-    @JoinColumn(name = "university_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Course> course;
 
 
@@ -51,11 +49,11 @@ public class University implements Serializable {
         this.course = new ArrayList<>();
     }
 
-    public long enroll(String first, String last){
+    public Long enroll(String first, String last){
         if(student.size() >= MAX_STUDENTS ) {
             throw new RuntimeException("Maximum number of students reached.");
         }
-        Student tmp = new Student(first, last, id);
+        Student tmp = new Student(first, last, this);
         logger.info("New student enrolled: " + tmp.getId() + ", " + tmp.getFirst() + " " + tmp.getLast());
         student.add(tmp);
         return tmp.getId();
@@ -70,12 +68,12 @@ public class University implements Serializable {
         return tmp.toString();
     }
 
-    public long activate(String title, String teacher){
+    public Long activate(String title, String teacher){
 
         if(course.size() >= MAX_COURSES) {
             throw new RuntimeException("Maximum number of courses reached.");
         }
-        Course c = new Course(title, teacher, id);
+        Course c = new Course(title, teacher, this);
         logger.info("New course activated: " + c.getId() + ", " + c.getTitle() + " " + c.getTeacher());
         course.add(c);
         return c.getId();

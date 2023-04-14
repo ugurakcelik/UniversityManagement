@@ -40,14 +40,15 @@ class UniversityServiceTest {
     @Test
     @Order(2)
     void activate() {
-        long a = universityService.activate("Macro Economics", "Paul Krugman", 1L);
+        Long a = universityService.activate("Macro Economics", "Paul Krugman", 1L);
         System.out.println(a);
     }
 
     @Test
     @Order(3)
     void enroll() {
-        long a = universityService.enroll("Ugur", "Akcelik", 1L);
+        Long a = universityService.enroll("Ugur", "Akcelik", 1L);
+        Long b = universityService.enroll("Ugur", "Akcelik", 1L);
     }
 
     @Test

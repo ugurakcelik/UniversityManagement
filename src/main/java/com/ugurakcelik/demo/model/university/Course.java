@@ -1,5 +1,6 @@
 package com.ugurakcelik.demo.model.university;
 
+import com.ugurakcelik.demo.model.University;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,16 +12,16 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Course implements Serializable {
     private String title;
     private String teacher;
     @Id
     @SequenceGenerator(name = "course_id_seq", sequenceName = "course_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_id_seq")
-    private Long id = 1L;
-    @Column(name = "university_id")
-    private long universityId;
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private University university;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "courseId", referencedColumnName = "id")
     @JoinColumn(name = "universityId", referencedColumnName = "university_id")
@@ -31,10 +32,10 @@ public class Course implements Serializable {
     @JoinColumn(name = "courseId", referencedColumnName = "id")
     private List<Exam> grades= new ArrayList<>();
 
-    public Course(String title, String teacher, long universityId){
+    public Course(String title, String teacher, University university){
         this.title = title;
         this.teacher = teacher;
-        this.universityId = universityId;
+        this.university = university;
     }
 
     public void register(Long studentID, long universityId) {
@@ -97,4 +98,15 @@ public class Course implements Serializable {
         return s;
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "title='" + title + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", id=" + id +
+                ", universityId=" + university.getId() +
+                ", attendees=" + attendees +
+                ", grades=" + grades +
+                '}';
+    }
 }
