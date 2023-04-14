@@ -17,7 +17,8 @@ public class Exam implements Serializable {
     @SequenceGenerator(name = "exam_id_seq", sequenceName = "exam_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "exam_id_seq")
     private Long id = 1L;
-    private long courseId;
+    @Column(name = "course_id")
+    private Long courseId;
     private Long studentId;
     private float grade;
 

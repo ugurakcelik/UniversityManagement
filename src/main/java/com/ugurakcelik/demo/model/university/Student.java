@@ -1,7 +1,8 @@
 package com.ugurakcelik.demo.model.university;
 
-import com.ugurakcelik.demo.model.University;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,19 +20,18 @@ public class Student implements Serializable {
     private String first;
     private String last;
 
-    @ManyToOne
-    @JoinColumn(name = "university_id")
-    private University university;
+    @Column(name = "university_id")
+    private Long universityId;
 
     public Student(String first, String last) {
         this.first = first;
         this.last = last;
     }
 
-    public Student(String first, String last, University u) {
+    public Student(String first, String last, Long universityId) {
         this.first = first;
         this.last = last;
-        this.university = u;
+        this.universityId = universityId;
     }
 
 
@@ -41,7 +41,7 @@ public class Student implements Serializable {
                 "id=" + id +
                 ", first='" + first + '\'' +
                 ", last='" + last + '\'' +
-                ", universityId=" + university.getId() +
+                ", universityId=" + universityId +
                 '}';
     }
 }

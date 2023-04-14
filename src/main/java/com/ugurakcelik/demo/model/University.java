@@ -34,10 +34,12 @@ public class University implements Serializable {
     private final int MAX_COURSES_PER_STUDENT = 25;
     private String name;
     private String rector;
-    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id", referencedColumnName = "id")
     private List<Student> student;
 
-    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id", referencedColumnName = "id")
     private List<Course> course;
 
 
@@ -53,7 +55,7 @@ public class University implements Serializable {
         if(student.size() >= MAX_STUDENTS ) {
             throw new RuntimeException("Maximum number of students reached.");
         }
-        Student tmp = new Student(first, last, this);
+        Student tmp = new Student(first, last, id);
         logger.info("New student enrolled: " + tmp.getId() + ", " + tmp.getFirst() + " " + tmp.getLast());
         student.add(tmp);
         return tmp.getId();
@@ -73,7 +75,7 @@ public class University implements Serializable {
         if(course.size() >= MAX_COURSES) {
             throw new RuntimeException("Maximum number of courses reached.");
         }
-        Course c = new Course(title, teacher, this);
+        Course c = new Course(title, teacher, id);
         logger.info("New course activated: " + c.getId() + ", " + c.getTitle() + " " + c.getTeacher());
         course.add(c);
         return c.getId();
@@ -104,7 +106,7 @@ public class University implements Serializable {
         }
 
         logger.info("Student " + sTmp.getId() + " signed up for course " + cTmp.getId());
-        cTmp.register(sTmp.getId(), id);
+        cTmp.register(sTmp.getId());
     }
 
     public String listAttendees(long courseCode){

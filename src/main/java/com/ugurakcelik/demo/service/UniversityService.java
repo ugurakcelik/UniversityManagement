@@ -95,7 +95,7 @@ public class UniversityService {
                 .orElseThrow(() -> new RuntimeException("Course not found."));
         Student sTmp = studentRepository.findById(studentID)
                 .orElseThrow(() -> new RuntimeException("Student not found."));
-        University uTmp = universityRepository.findById(cTmp.getUniversity().getId())
+        University uTmp = universityRepository.findById(cTmp.getUniversityId())
                 .orElseThrow(() -> new RuntimeException("University not found."));
 
         uTmp.register(sTmp.getId(), cTmp.getId());
@@ -105,7 +105,7 @@ public class UniversityService {
     public String listAttendees(long courseCode){
         Course cTmp = courseRepository.findById(courseCode)
                 .orElseThrow(() -> new RuntimeException("Course not found."));
-        University uTmp = universityRepository.findById(cTmp.getUniversity().getId())
+        University uTmp = universityRepository.findById(cTmp.getUniversityId())
                 .orElseThrow(() -> new RuntimeException("University not found."));
 
         return uTmp.listAttendees(cTmp.getId());
@@ -114,7 +114,7 @@ public class UniversityService {
     public String studyPlan(long studentID){
         Student sTmp = studentRepository.findById(studentID)
                 .orElseThrow(() -> new RuntimeException("Student not found."));
-        University uTmp = universityRepository.findById(sTmp.getUniversity().getId())
+        University uTmp = universityRepository.findById(sTmp.getUniversityId())
                 .orElseThrow(() -> new RuntimeException("University not found."));
         return uTmp.studyPlan(sTmp.getId());
     }
@@ -138,7 +138,7 @@ public class UniversityService {
 
         Student sTmp = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found."));
-        University uTmp = universityRepository.findById(sTmp.getUniversity().getId())
+        University uTmp = universityRepository.findById(sTmp.getUniversityId())
                 .orElseThrow(() -> new RuntimeException("University not found."));
 
         return uTmp.studentAvg(sTmp.getId());
@@ -148,7 +148,7 @@ public class UniversityService {
 
         Course cTmp = courseRepository.findById(courseID)
                 .orElseThrow(() -> new RuntimeException("Course not found."));
-        University uTmp = universityRepository.findById(cTmp.getUniversity().getId())
+        University uTmp = universityRepository.findById(cTmp.getUniversityId())
                 .orElseThrow(() -> new RuntimeException("University not found."));
 
         return uTmp.courseAvg(cTmp.getId());

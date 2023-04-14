@@ -13,32 +13,33 @@ import java.util.List;
 @Getter
 @Setter
 public class Course implements Serializable {
-    private String title;
-    private String teacher;
     @Id
     @SequenceGenerator(name = "course_id_seq", sequenceName = "course_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_id_seq")
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "university_id")
-    private University university;
+    private String title;
+    private String teacher;
+    @Column(name = "university_id")
+    private Long universityId;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "courseId", referencedColumnName = "id")
-    @JoinColumn(name = "universityId", referencedColumnName = "university_id")
+    @JoinTable(name = "attendee", joinColumns = {
+            @JoinColumn(name = "course_id", referencedColumnName = "id"),
+            @JoinColumn(name = "university_id", referencedColumnName = "university_id")
+    })
     private List<Attendee> attendees = new ArrayList<>();
 
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "courseId", referencedColumnName = "id")
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    @JoinColumn(name = "university_id", referencedColumnName = "university_id")
     private List<Exam> grades= new ArrayList<>();
 
-    public Course(String title, String teacher, University university){
+    public Course(String title, String teacher, Long universityId) {
         this.title = title;
         this.teacher = teacher;
-        this.university = university;
+        this.universityId = universityId;
     }
 
-    public void register(Long studentID, long universityId) {
+    public void register(Long studentID) {
         if (attendees.size() >= 100) {
             throw new RuntimeException("Course is already full");
         }
@@ -104,7 +105,7 @@ public class Course implements Serializable {
                 "title='" + title + '\'' +
                 ", teacher='" + teacher + '\'' +
                 ", id=" + id +
-                ", universityId=" + university.getId() +
+                ", universityId=" + universityId +
                 ", attendees=" + attendees +
                 ", grades=" + grades +
                 '}';
