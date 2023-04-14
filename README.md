@@ -1,6 +1,6 @@
 # University Management Project
 
-This project is an implementation of a university management system that uses an Object-Oriented Programming (OOP) structure to model the entities in a university, such as students, courses, and the university itself.
+This project is an implementation of a university management system that uses an **Object-Oriented Programming (OOP)** structure to model the entities in a university, such as students, courses, and the university itself. The project uses **Spring Boot** and **Spring Data JPA** to interact with a relational database.The **Lombok** library is used to generate getters, setters, and toString methods for the University class.
 
 The main class contains the entry point for the program, which initializes an instance of the University class, sets the name of the university, and creates and enrolls students into it. The program also activates courses and registers students in them, schedules exams, and calculates student and course averages.
 
