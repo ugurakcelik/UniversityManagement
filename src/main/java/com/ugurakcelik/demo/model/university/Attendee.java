@@ -13,9 +13,9 @@ import java.io.Serializable;
 public class Attendee implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "attendee_id_seq", sequenceName = "attendee_id_seq", allocationSize = 10)
+    @SequenceGenerator(name = "attendee_id_seq", sequenceName = "attendee_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "attendee_id_seq")
-    private Long id = 1L;
+    private Long id;
     @Column(name = "course_id")
     private Long courseId;
     private Long studentId;

@@ -90,7 +90,7 @@ public class University implements Serializable {
         return tmp.toString();
     }
 
-    public void register(long studentID, long courseCode){
+    public void register(Long studentID, Long courseCode){
 
         Course cTmp = findCourseById(courseCode);
         Student sTmp = findStudentById(studentID);

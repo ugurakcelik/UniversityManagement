@@ -17,13 +17,13 @@ public class UniversityController {
 
     @GetMapping
     public String getName(){
-        return universityService.getUni(1);
+        return universityService.getUni(1L);
     }
 
     @PostMapping
     public ResponseEntity<?> createUni(@RequestBody String first){
         universityService.createUni(first);
-        System.out.printf(universityService.getUni(1));
+        System.out.printf(universityService.getUni(1L));
         return ResponseEntity.ok().build();
     }
 }

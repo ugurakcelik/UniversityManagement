@@ -14,13 +14,13 @@ import java.io.Serializable;
 public class Exam implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "exam_id_seq", sequenceName = "exam_id_seq", allocationSize = 10)
+    @SequenceGenerator(name = "exam_id_seq", sequenceName = "exam_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "exam_id_seq")
-    private Long id = 1L;
+    private Long id;
     @Column(name = "course_id")
     private Long courseId;
     private Long studentId;
-    private float grade;
+    private Float grade;
 
     public Exam (long studentId, long courseId, float grade){
         this.studentId = studentId;

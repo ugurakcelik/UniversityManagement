@@ -33,102 +33,82 @@ public class UniversityService {
     }
 
     public String createUni(String name){
-        University uni= new University(name);
-        universityRepository.save(uni);
-        return uni.toString();
+        University university = new University(name);
+        universityRepository.save(university);
+        return university.toString();
     }
 
     public String getUni(long id){
-        University university = universityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        University university = fetchUniversityById(id);
        return university.toString();
     }
 
     public void setRector(String rector, long id){
 
-        University university = universityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        University university = fetchUniversityById(id);
         university.setRector(rector);
         universityRepository.save(university);
     }
     public String getRector(){
         Long id = 1L;
-        University university = universityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        University university = fetchUniversityById(id);
        return university.getRector();
     }
     @Transactional
     public Long enroll(String first, String last, Long universityId){
-        University uTmp = universityRepository.findById(universityId)
-                .orElseThrow(() -> new RuntimeException("University not found."));
 
+        University uTmp = fetchUniversityById(universityId);
         Long id = uTmp.enroll(first, last);
-        studentRepository.save(uTmp.getStudent().get(uTmp.getStudent().size()-1));
         universityRepository.save(uTmp);
         return id;
     }
 
     public String student(long id){
-        Student sTmp = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found."));
+        Student sTmp = fetchStudentById(id);
         return sTmp.toString();
     }
 
     public Long activate(String title, String teacher, long uniId){
-          University uTmp = universityRepository.findById(uniId)
-                  .orElseThrow(() -> new RuntimeException("University not found."));
-
+          University uTmp = fetchUniversityById(uniId);
           Long id = uTmp.activate(title, teacher);
-        universityRepository.save(uTmp);
-            return id;
+          universityRepository.save(uTmp);
+          return id;
     }
 
     public String course(long code){
-        Course cTmp = courseRepository.findById(code)
-                .orElseThrow(() -> new RuntimeException("Course not found."));
+        Course cTmp = fetchCourseById(code);
         return cTmp.toString();
     }
 
-    public void register(long studentID, long courseCode){
+    public void register(Long studentID, Long courseCode){
 
-        Course cTmp = courseRepository.findById(courseCode)
-                .orElseThrow(() -> new RuntimeException("Course not found."));
-        Student sTmp = studentRepository.findById(studentID)
-                .orElseThrow(() -> new RuntimeException("Student not found."));
-        University uTmp = universityRepository.findById(cTmp.getUniversityId())
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        Course cTmp = fetchCourseById(courseCode);
+        Student sTmp = fetchStudentById(studentID);
+        University uTmp = fetchUniversityById(sTmp.getUniversityId());
 
         uTmp.register(sTmp.getId(), cTmp.getId());
         universityRepository.save(uTmp);
     }
 
     public String listAttendees(long courseCode){
-        Course cTmp = courseRepository.findById(courseCode)
-                .orElseThrow(() -> new RuntimeException("Course not found."));
-        University uTmp = universityRepository.findById(cTmp.getUniversityId())
-                .orElseThrow(() -> new RuntimeException("University not found."));
 
+        Course cTmp = fetchCourseById(courseCode);
+        University uTmp = fetchUniversityById(cTmp.getUniversityId());
         return uTmp.listAttendees(cTmp.getId());
     }
 
     public String studyPlan(long studentID){
-        Student sTmp = studentRepository.findById(studentID)
-                .orElseThrow(() -> new RuntimeException("Student not found."));
-        University uTmp = universityRepository.findById(sTmp.getUniversityId())
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        Student sTmp = fetchStudentById(studentID);
+        University uTmp = fetchUniversityById(sTmp.getUniversityId());
         return uTmp.studyPlan(sTmp.getId());
     }
 
     public void exam(long studentId, long courseID, float grade, long universityId) {
 
-        University uTmp = universityRepository.findById(universityId)
-                .orElseThrow(() -> new RuntimeException("University not found."));
-        Course cTmp = courseRepository.findById(courseID)
-                .orElseThrow(() -> new RuntimeException("Course not found."));
-        Student sTmp = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found."));
-        Attendee aTmp = attendeeRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Attendee not found."));
+        University uTmp = fetchUniversityById(universityId);
+        Course cTmp = fetchCourseById(courseID);
+        Student sTmp = fetchStudentById(studentId);
+        Attendee aTmp = fetchAttendeeById(studentId);
 
         uTmp.exam(sTmp.getId(), cTmp.getId(), grade);
         universityRepository.save(uTmp);
@@ -136,27 +116,35 @@ public class UniversityService {
 
     public String studentAvg(long studentId){
 
-        Student sTmp = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found."));
-        University uTmp = universityRepository.findById(sTmp.getUniversityId())
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        Student sTmp = fetchStudentById(studentId);
+        University uTmp = fetchUniversityById(sTmp.getUniversityId());
 
         return uTmp.studentAvg(sTmp.getId());
     }
 
     public String courseAvg(long courseID){
 
-        Course cTmp = courseRepository.findById(courseID)
-                .orElseThrow(() -> new RuntimeException("Course not found."));
-        University uTmp = universityRepository.findById(cTmp.getUniversityId())
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        Course cTmp = fetchCourseById(courseID);
+        University uTmp = fetchUniversityById(cTmp.getUniversityId());
 
         return uTmp.courseAvg(cTmp.getId());
     }
 
     public String topThreeStudents(long universityId){
-        University uTmp = universityRepository.findById(universityId)
-                .orElseThrow(() -> new RuntimeException("University not found."));
+        University uTmp = fetchUniversityById(universityId);
         return uTmp.topThreeStudents();
+    }
+
+    public University fetchUniversityById(Long id) {
+        return universityRepository.findById(id).orElseThrow(() -> new RuntimeException("University not found."));
+    }
+    public Student fetchStudentById(Long id) {
+        return studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found."));
+    }
+    public Course fetchCourseById(Long id) {
+        return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found."));
+    }
+    public Attendee fetchAttendeeById(Long id) {
+        return attendeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Attendee not found."));
     }
 }
