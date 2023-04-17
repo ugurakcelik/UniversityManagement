@@ -19,91 +19,106 @@ class UniversityServiceTest {
     @Order(1)
     void createUni() {
         String u1 = universityService.createUni("Politecnico di Torino");
+        String u2 = universityService.createUni("Unito");
     }
 
     @Test
     void getUni() {
-        System.out.println(universityService.getUni(1l));
+        System.out.println(universityService.getUni(1L));
+        System.out.println(universityService.getUni(2L));
     }
 
     @Test
     void setRector() {
         universityService.setRector("Rector Hector", 1L);
+        universityService.setRector("Rector Hector", 2L);
     }
 
     @Test
     void getRector() {
-        String r = universityService.getRector();
-        System.out.println(r);
+        System.out.println(universityService.getRector(1L));
+        System.out.println(universityService.getRector(2L));
     }
 
     @Test
     @Order(2)
     void activate() {
-        Long a = universityService.activate("Macro Economics", "Paul Krugman", 1L);
-        System.out.println(a);
+        universityService.activate("Macro Economics", "Paul Krugman", 1L);
+        universityService.activate("Micro Economics", "Paul Krugman", 1L);
+
+        universityService.activate("Macro Economics", "Paul Krugman", 2L);
+        universityService.activate("Micro Economics", "Paul Krugman", 2L);
     }
 
     @Test
     @Order(3)
     void enroll() {
-        Long a = universityService.enroll("Ugur", "Akcelik", 1L);
-        Long b = universityService.enroll("Ugur", "Akcelik", 1L);
+        universityService.enroll("Ugur", "Akcelik", 1L);
+        universityService.enroll("John", "Doe", 1L);
+
+        universityService.enroll("Ugur", "Akcelik", 2L);
+        universityService.enroll("John", "Doe", 2L);
     }
 
     @Test
     @Order(4)
     void register() {
         universityService.register(1L, 1L);
+        universityService.register(1L, 2L);
+        universityService.register(2L, 1L);
+        universityService.register(2L, 2L);
     }
 
     @Test
     @Order(5)
     void exam() {
         universityService.exam(1L, 1L, 28L, 1L);
+        universityService.exam(1L, 2L, 28L, 1L);
+        universityService.exam(2L, 1L, 28L, 1L);
+        universityService.exam(2L, 2L, 28L, 1L);
     }
 
     @Test
     @Order(6)
     void studentAvg() {
-        String test = universityService.studentAvg(1L);
-        System.out.println(test);
+        System.out.println(universityService.studentAvg(1L));
+        System.out.println(universityService.studentAvg(2L));
     }
 
     @Test
     void student() {
-        String test = universityService.student(1L);
-        System.out.println(test);
+        System.out.println(universityService.student(1L));
+        System.out.println(universityService.student(2L));
     }
 
     @Test
     void course(){
-        String test = universityService.course(1L);
-        System.out.println(test);
+        System.out.println(universityService.course(1L));
+        System.out.println(universityService.course(2L));
     }
 
     @Test
     void listAttendees(){
-        String test = universityService.listAttendees(1L);
-        System.out.println(test);
+        System.out.println(universityService.listAttendees(1L));
+        System.out.println(universityService.listAttendees(2L));
     }
 
     @Test
     void studyPlan(){
-        String test = universityService.studyPlan(1L);
-        System.out.println(test);
+        System.out.println(universityService.studyPlan(1L));
+        System.out.println(universityService.studyPlan(2L));
     }
 
     @Test
     void courseAvg(){
-        String test = universityService.courseAvg(1L);
-        System.out.println(test);
+        System.out.println(universityService.courseAvg(1L));
+        System.out.println(universityService.courseAvg(2L));
     }
 
     @Test
     void topThreeStudents(){
-        String test = universityService.topThreeStudents(1L);
-        System.out.println(test);
+        System.out.println(universityService.topThreeStudents(1L));
+        System.out.println(universityService.topThreeStudents(2L));
     }
 
 }
