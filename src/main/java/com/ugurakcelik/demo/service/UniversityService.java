@@ -43,15 +43,14 @@ public class UniversityService {
        return university.toString();
     }
 
-    public void setRector(String rector, long id){
+    public void setRector(String rector, Long universityId){
 
-        University university = fetchUniversityById(id);
+        University university = fetchUniversityById(universityId);
         university.setRector(rector);
         universityRepository.save(university);
     }
-    public String getRector(){
-        Long id = 1L;
-        University university = fetchUniversityById(id);
+    public String getRector(Long universityId){
+        University university = fetchUniversityById(universityId);
        return university.getRector();
     }
     @Transactional
