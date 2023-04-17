@@ -24,16 +24,15 @@ public class Course implements Serializable {
     private String teacher;
     @Column(name = "university_id")
     private Long universityId;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "attendee", inverseJoinColumns = {
             @JoinColumn(name = "id", referencedColumnName = "course_id"),
             @JoinColumn(name = "university_id", referencedColumnName = "university_id")
     })
     private List<Attendee> attendees = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
-    @JoinColumn(name = "university_id", referencedColumnName = "university_id")
     private List<Exam> grades= new ArrayList<>();
 
     public Course(String title, String teacher, Long universityId) {
