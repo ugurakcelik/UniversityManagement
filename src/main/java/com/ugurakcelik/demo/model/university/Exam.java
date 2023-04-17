@@ -20,9 +20,18 @@ public class Exam implements Serializable {
     @Column(name = "course_id")
     private Long courseId;
     private Long studentId;
+
+    private Long universityId;
     private Float grade;
 
-    public Exam (long studentId, long courseId, float grade){
+    public Exam (Long studentId, Long courseId, Float grade){
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.grade = grade;
+    }
+
+    public Exam (Long universityId, Long studentId, Long courseId, Float grade){
+        this.universityId = universityId;
         this.studentId = studentId;
         this.courseId = courseId;
         this.grade = grade;
