@@ -25,10 +25,7 @@ public class Course implements Serializable {
     @Column(name = "university_id")
     private Long universityId;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "attendee", inverseJoinColumns = {
-            @JoinColumn(name = "id", referencedColumnName = "course_id"),
-            @JoinColumn(name = "university_id", referencedColumnName = "university_id")
-    })
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private List<Attendee> attendees = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
