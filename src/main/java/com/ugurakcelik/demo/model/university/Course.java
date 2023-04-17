@@ -68,7 +68,7 @@ public class Course implements Serializable {
         if (grade < 0 || grade > 30) {
             throw new RuntimeException("Grade must be between 0 and 30");
         }
-        grades.add(new Exam(studentID, id, grade));
+        grades.add(new Exam(universityId, studentID, id, grade));
     }
 
     public String courseAvg() {
