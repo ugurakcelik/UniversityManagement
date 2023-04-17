@@ -24,7 +24,7 @@ public class Course implements Serializable {
     private String teacher;
     @Column(name = "university_id")
     private Long universityId;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private List<Attendee> attendees = new ArrayList<>();
 
