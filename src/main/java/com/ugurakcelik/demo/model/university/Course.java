@@ -28,7 +28,7 @@ public class Course implements Serializable {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private List<Attendee> attendees = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private List<Exam> grades= new ArrayList<>();
 
@@ -51,10 +51,6 @@ public class Course implements Serializable {
 
     public List<Attendee> attendees() {
         return this.attendees;
-    }
-
-    public List<Exam> grades() {
-        return grades;
     }
     public void exam(long studentID, float grade) {
 

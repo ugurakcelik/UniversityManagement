@@ -24,12 +24,6 @@ public class Exam implements Serializable {
     private Long universityId;
     private Float grade;
 
-    public Exam (Long studentId, Long courseId, Float grade){
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.grade = grade;
-    }
-
     public Exam (Long universityId, Long studentId, Long courseId, Float grade){
         this.universityId = universityId;
         this.studentId = studentId;
