@@ -18,7 +18,8 @@ The `University` class is used to represent a university, with properties and me
 * Retrieving a student's study plan
 
 ## Database 
-![db](https://user-images.githubusercontent.com/57275553/232652227-a32f600c-8888-40d3-a742-7eb8109a3764.png)
+![DB](https://user-images.githubusercontent.com/57275553/232847036-2c649a34-fc6d-42f2-a450-a5bb9d761b09.png)
+
 
 The objective of this database is to store information about universities, courses, students, exams, and attendees.
 Each table has its own primary key, and foreign keys are used to establish relationships between the tables. 
