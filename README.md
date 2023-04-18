@@ -6,7 +6,7 @@ The main class contains the entry point for the program, which initializes an in
 
 ## Overview
 
-The University Management project is a software system designed to manage various aspects of a university, such as student enrollment, course register, and exam tracking. The project uses a Model-View-Controller (MVC) architecture. The controller component contains the service classes, which interact with the repository component to perform CRUD (create, read, update, delete) operations on the model. The repository component is responsible for persisting the data to a database.
+The University Management project is a software system designed to manage various aspects of a university, such as student enrollment, course register, and exam tracking. The project uses a Model-View-Controller-Service (MVCS) architecture. The controller component contains the service classes, which utilize the repository component to perform CRUD (create, read, update, delete) operations on the model. The repository component is responsible for persisting the data to a database, allowing the service classes to access and modify the data as needed.
 
 The `University` class is used to represent a university, with properties and methods to manage students and courses. The class provides the following features:
 
