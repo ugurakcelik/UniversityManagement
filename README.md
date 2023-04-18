@@ -6,6 +6,8 @@ The main class contains the entry point for the program, which initializes an in
 
 ## Overview
 
+The University Management project is a software system designed to manage various aspects of a university, such as student enrollment, course register, and exam tracking. The project uses a Model-View-Controller (MVC) architecture. The controller component contains the service classes, which interact with the repository component to perform CRUD (create, read, update, delete) operations on the model. The repository component is responsible for persisting the data to a database.
+
 The `University` class is used to represent a university, with properties and methods to manage students and courses. The class provides the following features:
 
 * Enrolling students
@@ -14,6 +16,15 @@ The `University` class is used to represent a university, with properties and me
 * Retrieving information about students and courses
 * Listing attendees for a course
 * Retrieving a student's study plan
+
+## Database 
+![db](https://user-images.githubusercontent.com/57275553/232652227-a32f600c-8888-40d3-a742-7eb8109a3764.png)
+
+The objective of this database is to store information about universities, courses, students, exams, and attendees.
+Each table has its own primary key, and foreign keys are used to establish relationships between the tables. 
+
+The database also includes several constraints, such as ensuring that the university_id in each table references an existing id in the university table, and that the grade in the exam table is between 0 and 30.
+
 
 ## Class Members
 
